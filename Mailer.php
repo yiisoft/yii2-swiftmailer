@@ -146,7 +146,7 @@ class Mailer extends BaseMailer
      */
     protected function createSwiftMailer()
     {
-        return \Swift_Mailer::newInstance($this->getTransport());
+        return new \Swift_Mailer($this->getTransport());
     }
 
     /**
