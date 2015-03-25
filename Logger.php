@@ -10,7 +10,7 @@ namespace yii\swiftmailer;
 use Yii;
 
 /**
- * Logger is as SwiftMailer plugin, which allows passing of the SwiftMailer internal logs to the
+ * Logger is a SwiftMailer plugin, which allows passing of the SwiftMailer internal logs to the
  * Yii logging mechanism. Each native SwiftMailer log message will be converted into Yii 'info' log entry.
  *
  * In order to catch logs written by this class, you need to setup a log route for 'yii\swiftmailer\Logger::add' category.
@@ -45,7 +45,7 @@ class Logger implements \Swift_Plugins_Logger
      */
     public function clear()
     {
-        // empty method stub
+        // do nothing
     }
 
     /**
