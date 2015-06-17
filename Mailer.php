@@ -227,8 +227,9 @@ class Mailer extends BaseMailer
             $object = Yii::createObject($className);
         }
         if (!empty($config)) {
+            $reflection = new \ReflectionObject($object);
             foreach ($config as $name => $value) {
-                if (property_exists($object, $name)) {
+                if (property_exists($object, $name) && $reflection->getProperty($name)->isPublic()) {
                     $object->$name = $value;
                 } else {
                     $setter = 'set' . $name;
