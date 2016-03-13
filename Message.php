@@ -28,6 +28,7 @@ class Message extends BaseMessage
      * @var \Swift_Message Swift message instance.
      */
     private $_swiftMessage;
+    public $messageClass = "\Swift_Message";
 
 
     /**
@@ -233,7 +234,21 @@ class Message extends BaseMessage
             }
         }
     }
-
+    
+    /**
+     * Adds a Swift_Signers_DKIMSigners object to the Swift_SignedMessage message.
+     * This requires the messageClass to be set to \Swift_SignedMessage instead of \Swift_Message.
+     * messageClass can be set to the correct value via yii\swiftmailer\Mailer::$messageConfig
+     * @param string $privateKeyAlias an alias pointing to the private key file.
+     * @param string $domain the domain to sign with.
+     * @param string $selector the dkim domain selector.
+     */
+     public function setDkim($privateKeyAlias, $domain, $selector) {
+        $privateKey = file_get_contents(Yii::getAlias($privateKeyAlias));
+        $dkimSigner = new \Swift_Signers_DKIMSigner($privateKey, $domain, $selector);
+        $this->getSwiftMessage()->attachSigner($dkimSigner);
+    }
+    
     /**
      * @inheritdoc
      */
@@ -314,6 +329,6 @@ class Message extends BaseMessage
      */
     protected function createSwiftMessage()
     {
-        return new \Swift_Message();
+        return new $this->messageClass;
     }
 }
