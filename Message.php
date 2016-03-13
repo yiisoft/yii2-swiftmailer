@@ -247,6 +247,7 @@ class Message extends BaseMessage
         $privateKey = file_get_contents(Yii::getAlias($privateKeyAlias));
         $dkimSigner = new \Swift_Signers_DKIMSigner($privateKey, $domain, $selector);
         $this->getSwiftMessage()->attachSigner($dkimSigner);
+        return $this;
     }
     
     /**
