@@ -28,6 +28,10 @@ class Message extends BaseMessage
      * @var \Swift_Message Swift message instance.
      */
     private $_swiftMessage;
+    
+    /**
+     * @var string Swift message class name.
+     */
     public $messageClass = "\Swift_Message";
 
 
@@ -246,7 +250,11 @@ class Message extends BaseMessage
      public function setDkim($privateKeyAlias, $domain, $selector) {
         $privateKey = file_get_contents(Yii::getAlias($privateKeyAlias));
         $dkimSigner = new \Swift_Signers_DKIMSigner($privateKey, $domain, $selector);
-        $this->getSwiftMessage()->attachSigner($dkimSigner);
+        $message = $this->getSwiftMessage();
+        if (!$message instanceof \Swift_SignedMessage) {
+                throw new \yii\base\InvalidaConfigException('Message::messageClass must be instance of \Swift_SignedMessage');
+        }
+        $message->attachSigner($dkimSigner);
         return $this;
     }
     
