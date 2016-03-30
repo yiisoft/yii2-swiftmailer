@@ -14,7 +14,8 @@ Yii::setAlias('@yii/swiftmailer', __DIR__ . '/../../../../extensions/swiftmailer
  * @group mail
  * @group swiftmailer
  */
-class MessageTest extends TestCase {
+class MessageTest extends TestCase
+{
 
     /**
      * @var string test email address, which will be used as receiver for the messages.

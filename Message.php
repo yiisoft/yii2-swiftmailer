@@ -24,7 +24,8 @@ use yii\mail\BaseMessage;
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 2.0
  */
-class Message extends BaseMessage {
+class Message extends BaseMessage
+{
 
     /**
      * @var \Swift_Message Swift message instance.
