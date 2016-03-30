@@ -14,12 +14,40 @@ Yii::setAlias('@yii/swiftmailer', __DIR__ . '/../../../../extensions/swiftmailer
  * @group mail
  * @group swiftmailer
  */
-class MessageTest extends TestCase
-{
+class MessageTest extends TestCase {
+
     /**
      * @var string test email address, which will be used as receiver for the messages.
      */
     protected $testEmailReceiver = 'someuser@somedomain.com';
+    protected $fakeKey = "-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAyehiMTRxvfQz8nbQQAgL481QipVMF+E7ljWKHTQQSYfqktR+
+zFYqX81vKeK9/2D6AiK5KJSBVdF7aURasppuDaxFJWrPvacd3IQCrGxsGkwwlWPO
+ggB1WpOEKhVUZnGzdm96Fk23oHFKrEiQlSG0cB9P/wUKz57b8tsaPve5sKBG0Kww
+9YIDRM0x4w3c9fupPz8H5p2HHn4uPbn+whJyALZHD1+CftIGOHq8AUH4w4Z7bjF4
+DD4zibpgRn96BVaRIJjxZdlKq69v52j3v8O8SAqSkWmpDWiIsm85Gl00Loay6iiJ
+XNy11y0sUysFeCSpb/9cRyxb6j0jEwQXrw0J/QIDAQABAoIBAQCFuRgXeKGAalVh
+V5mTXwDo7hlSv5C3HCBH2svPjaTf3lnYx033bXYBH2Fpf1fQ5NyQP4kcPEbwnJ48
+2N2s/qS2/4qIPpa6CA259+CBbAmo3R8sQf8KkN0okRzudlQAyXtPjINydCSS6ZXI
+RwMjEkCcJdDomOFRIuiPjtdyLsXYGRAa95yjpTU0ri1mEJocX6tlchlgUsjwc2ml
+rCTKLc6b3KtYNYUZ/Rg0HzWRIhkbQFIz7uS0t7gF3sqDOLcaoWIv2rmrpg5T0suA
+e5Sz7nK2XBeaPi/AKNCVoXJiCJ6SU6A+6Q4T5Rvnt+uxGpLKiilb/fRpQaq1RFO9
+k5BDPgftAoGBAPyYBPrTPYPYGosqzbFypNaWLOUnjkdFxlThpwvLOa7nzwVcsQ8V
+EXDkELNYy/jOYJLsNhhZ+bGAwWdNV46pdurFKuzS4vb11RfZCc3BTM05IFUFrKir
+YVgWw5AYKJLkUiACASEP55P8j2cKocCV5SdI0sGyU7W+3S1NbhBOlr0nAoGBAMyh
+Y/Ki5wo3LX43l9F1I2HnKVJSj2XzpWTSYco8sUbS4yUBVk9qPBjIHhT+mK2k2FqD
+bSWsu5tGVfaMlFbYxXnSBqjIQfHRLWWVmWMr5sLFk0aJyY1mjGh6BEhTp/Xs86/w
+cdVlI1N5blxPy4VvoLmHIb/O1xqi64FV1gW7gD47AoGAErFlXPKZENLDVB08z67+
+R+shM2wz+U5OmSWB6TuG70y0Y18ysz0J52LZYYxmu+j5+KWGc1LlSZ+PsIdmvWYJ
+KOKihJgut7wFoxgqw5FUj7N0kxYyauET+SLmIhnHludStI+xabL1nlwIeMWupsPx
+C3E2N6Ns0nxnfdzHEmneee0CgYA5kF0RcIoV8Ze2neTzY0Rk0iZpphf40iWAyz3/
+KjukdMa5LjsddAEb54+u0EAa+Phz3eziYEkWUR71kG5aT/idYFvHNy513CYtIXxY
+zYzI1dOsUC6GvIZbDZgO0Jm7MMEMiVM8eIsLfGlzRm82RkSsbDsuPf183L/rTj46
+tphI6QKBgQDobarzJhVUdME4QKAlhJecKBO1xlVCXWbKGdRcJn0Gzq6iwZKdx64C
+hQGpKaZBDDCHLk7dDzoKXF1udriW9EcImh09uIKGYYWS8poy8NUzmZ3fy/1o2C2O
+U41eAdnQ3dDGzUNedIJkSh6Z0A4VMZIEOag9hPNYqQXZBQgfobvPKw==
+-----END RSA PRIVATE KEY-----
+";
 
     public function setUp()
     {
@@ -110,12 +138,36 @@ class MessageTest extends TestCase
         return $attachment;
     }
 
-    // Tests :
+    /**
+     * Returns a test message including from,to, subject and textbody
+     * @return Message test message 
+     * @see 'testSend()'
+     * @see 'testSendSigned()'
+     */
+    protected function getTestMessage()
+    {
+        $message = $this->createTestMessage();
+        $message->setTo($this->testEmailReceiver);
+        $message->setFrom('someuser@somedomain.com');
+        $message->setSubject('Yii Swift Test');
+        $message->setTextBody('Yii Swift Test body');
+        return $message;
+    }
+
+// Tests :
 
     public function testGetSwiftMessage()
     {
         $message = new Message();
-        $this->assertTrue(is_object($message->getSwiftMessage()), 'Unable to get Swift message!');
+        $swiftMessage = $message->getSwiftMessage();
+        $this->assertTrue(is_object($swiftMessage), 'Unable to get Swift message!');
+        $this->assertInstanceOf("\Swift_Message", $swiftMessage, 'getSwiftMessage not returning \Swift_Message when expected');
+    }
+
+    public function testGetDkimSigner()
+    {
+        $message = new Message;
+        $this->assertInstanceOf("\Swift_Signers_DKIMSigner", $message->getDkimSigner(null, null, null), "getDkimSigner not returning \Swift_Signers_DKIMSigner when expected");
     }
 
     /**
@@ -168,14 +220,14 @@ class MessageTest extends TestCase
         $bcc = 'bccuser@somedomain.com';
 
         $messageString = $this->createTestMessage()
-            ->setCharset($charset)
-            ->setSubject($subject)
-            ->setFrom($from)
-            ->setReplyTo($replyTo)
-            ->setTo($to)
-            ->setCc($cc)
-            ->setBcc($bcc)
-            ->toString();
+                ->setCharset($charset)
+                ->setSubject($subject)
+                ->setFrom($from)
+                ->setReplyTo($replyTo)
+                ->setTo($to)
+                ->setCc($cc)
+                ->setBcc($bcc)
+                ->toString();
 
         $this->assertContains('charset=' . $charset, $messageString, 'Incorrect charset!');
         $this->assertContains('Subject: ' . $subject, $messageString, 'Incorrect "Subject" header!');
@@ -191,11 +243,17 @@ class MessageTest extends TestCase
      */
     public function testSend()
     {
-        $message = $this->createTestMessage();
-        $message->setTo($this->testEmailReceiver);
-        $message->setFrom('someuser@somedomain.com');
-        $message->setSubject('Yii Swift Test');
-        $message->setTextBody('Yii Swift Test body');
+        $this->assertTrue($this->getTestMessage()->send());
+    }
+
+    /**
+     * @depends testGetSwiftMessage
+     */
+    public function testSendSigned()
+    {
+        $message = $this->getTestMessage();
+        $signer = $message->getDkimSigner($this->fakeKey, null, null);
+        $message->getSwiftMessage()->attachSigner($signer);
         $this->assertTrue($message->send());
     }
 
@@ -256,7 +314,7 @@ class MessageTest extends TestCase
         $message->setTo($this->testEmailReceiver);
         $message->setFrom('someuser@somedomain.com');
         $message->setSubject('Yii Swift Embed File Test');
-        $message->setHtmlBody('Embed image: <img src="' . $cid. '" alt="pic">');
+        $message->setHtmlBody('Embed image: <img src="' . $cid . '" alt="pic">');
 
         $this->assertTrue($message->send());
 
@@ -282,7 +340,7 @@ class MessageTest extends TestCase
         $message->setTo($this->testEmailReceiver);
         $message->setFrom('someuser@somedomain.com');
         $message->setSubject('Yii Swift Embed File Test');
-        $message->setHtmlBody('Embed image: <img src="' . $cid. '" alt="pic">');
+        $message->setHtmlBody('Embed image: <img src="' . $cid . '" alt="pic">');
 
         $this->assertTrue($message->send());
 
@@ -362,4 +420,5 @@ class MessageTest extends TestCase
         $content = $message->toString();
         $this->assertEquals(2, substr_count($content, $charset), 'Wrong charset for alternative body override.');
     }
+
 }

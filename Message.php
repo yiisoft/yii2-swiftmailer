@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -7,6 +8,7 @@
 
 namespace yii\swiftmailer;
 
+use Yii;
 use yii\mail\BaseMessage;
 
 /**
@@ -22,18 +24,17 @@ use yii\mail\BaseMessage;
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 2.0
  */
-class Message extends BaseMessage
-{
+class Message extends BaseMessage {
+
     /**
      * @var \Swift_Message Swift message instance.
      */
     private $_swiftMessage;
-    
+
     /**
      * @var string Swift message class name.
      */
     public $messageClass = "\Swift_Message";
-
 
     /**
      * @return \Swift_Message Swift message instance.
@@ -238,7 +239,19 @@ class Message extends BaseMessage
             }
         }
     }
-    
+
+    /**
+     * Returns a \Swift_Signers_DKIMSigner object
+     * @param type $privateKey
+     * @param type $domain
+     * @param type $selector
+     * @return \Swift_Signers_DKIMSigner
+     */
+    public function getDkimSigner($privateKey, $domain, $selector)
+    {
+        return new \Swift_Signers_DKIMSigner($privateKey, $domain, $selector);
+    }
+
     /**
      * Adds a Swift_Signers_DKIMSigners object to the Swift_SignedMessage message.
      * This requires the messageClass to be set to \Swift_SignedMessage instead of \Swift_Message.
@@ -246,18 +259,16 @@ class Message extends BaseMessage
      * @param string $privateKeyAlias an alias pointing to the private key file.
      * @param string $domain the domain to sign with.
      * @param string $selector the dkim domain selector.
+     * @see 'getDkimSigner()'
      */
-     public function setDkim($privateKeyAlias, $domain, $selector) {
-        $privateKey = file_get_contents(Yii::getAlias($privateKeyAlias));
-        $dkimSigner = new \Swift_Signers_DKIMSigner($privateKey, $domain, $selector);
-        $message = $this->getSwiftMessage();
-        if (!$message instanceof \Swift_SignedMessage) {
-                throw new \yii\base\InvalidaConfigException('Message::messageClass must be instance of \Swift_SignedMessage');
-        }
-        $message->attachSigner($dkimSigner);
+    public function setDkim($privateKeyAlias, $domain, $selector)
+    {
+        $path = Yii::getAlias($privateKeyAlias);
+        $dkimSigner = $this->getDkimSigner(file_get_contents($path), $domain, $selector);
+        $this->getSwiftMessage()->attachSigner($dkimSigner);
         return $this;
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -340,4 +351,5 @@ class Message extends BaseMessage
     {
         return new $this->messageClass;
     }
+
 }
