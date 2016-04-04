@@ -10,6 +10,12 @@ Yii Framework 2 swiftmailer extension Change Log
 2.0.5 under development
 -----------------------
 
+- no changes in this release.
+
+
+2.0.5 March 17, 2016
+--------------------
+
 - Bug #9: Fixed `Mailer` does not check if property is public, while configuring 'Swift' object (brandonkelly, klimov-paul)
 
 
