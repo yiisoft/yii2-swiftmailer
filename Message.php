@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -7,6 +8,7 @@
 
 namespace yii\swiftmailer;
 
+use Yii;
 use yii\mail\BaseMessage;
 
 /**
@@ -24,11 +26,16 @@ use yii\mail\BaseMessage;
  */
 class Message extends BaseMessage
 {
+
     /**
      * @var \Swift_Message Swift message instance.
      */
     private $_swiftMessage;
 
+    /**
+     * @var string Swift message class name.
+     */
+    public $messageClass = "\Swift_Message";
 
     /**
      * @return \Swift_Message Swift message instance.
@@ -235,6 +242,37 @@ class Message extends BaseMessage
     }
 
     /**
+     * Returns a \Swift_Signers_DKIMSigner object
+     * @param type $privateKey
+     * @param type $domain
+     * @param type $selector
+     * @return \Swift_Signers_DKIMSigner
+     * @since 2.0.6
+     */
+    public function getDkimSigner($privateKey, $domain, $selector)
+    {
+        return new \Swift_Signers_DKIMSigner($privateKey, $domain, $selector);
+    }
+
+    /**
+     * Adds a Swift_Signers_DKIMSigners object to the Swift_SignedMessage message.
+     * This requires the messageClass to be set to \Swift_SignedMessage instead of \Swift_Message.
+     * messageClass can be set to the correct value via yii\swiftmailer\Mailer::$messageConfig
+     * @param string $privateKeyAlias an alias pointing to the private key file.
+     * @param string $domain the domain to sign with.
+     * @param string $selector the dkim domain selector.
+     * @see 'getDkimSigner()'
+     * @since 2.0.6
+     */
+    public function setDkim($privateKeyAlias, $domain, $selector)
+    {
+        $path = Yii::getAlias($privateKeyAlias);
+        $dkimSigner = $this->getDkimSigner(file_get_contents($path), $domain, $selector);
+        $this->getSwiftMessage()->attachSigner($dkimSigner);
+        return $this;
+    }
+
+    /**
      * @inheritdoc
      */
     public function attach($fileName, array $options = [])
@@ -314,6 +352,7 @@ class Message extends BaseMessage
      */
     protected function createSwiftMessage()
     {
-        return new \Swift_Message();
+        return new $this->messageClass;
     }
+
 }
