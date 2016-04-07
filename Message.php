@@ -247,6 +247,7 @@ class Message extends BaseMessage
      * @param type $domain
      * @param type $selector
      * @return \Swift_Signers_DKIMSigner
+     * @since 2.0.6
      */
     public function getDkimSigner($privateKey, $domain, $selector)
     {
@@ -261,6 +262,7 @@ class Message extends BaseMessage
      * @param string $domain the domain to sign with.
      * @param string $selector the dkim domain selector.
      * @see 'getDkimSigner()'
+     * @since 2.0.6
      */
     public function setDkim($privateKeyAlias, $domain, $selector)
     {

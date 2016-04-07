@@ -21,6 +21,9 @@ class MessageTest extends TestCase
      * @var string test email address, which will be used as receiver for the messages.
      */
     protected $testEmailReceiver = 'someuser@somedomain.com';
+    /**
+     * @var string test private key for DKIM signing
+     */
     protected $fakeKey = "-----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEAyehiMTRxvfQz8nbQQAgL481QipVMF+E7ljWKHTQQSYfqktR+
 zFYqX81vKeK9/2D6AiK5KJSBVdF7aURasppuDaxFJWrPvacd3IQCrGxsGkwwlWPO
