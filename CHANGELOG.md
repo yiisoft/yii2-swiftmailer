@@ -4,7 +4,7 @@ Yii Framework 2 swiftmailer extension Change Log
 2.0.6 March 14, 2016
 -----------------------
 
-- Added DKIM signing capability (JulianNL, SilverFire)
+- Added DKIM signing capability (julianrutten)
 
 
 2.0.5 under development
