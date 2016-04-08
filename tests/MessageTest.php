@@ -19,8 +19,8 @@ class MessageTest extends TestCase
     /**
      * @var string test email address, which will be used as receiver for the messages.
      */
-    //protected $testEmailReceiver = 'someuser@somedomain.com';
-    protected $testEmailReceiver = 'klimov.paul@gmail.com';
+    protected $testEmailReceiver = 'someuser@somedomain.com';
+
 
     public function setUp()
     {
