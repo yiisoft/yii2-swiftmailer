@@ -21,6 +21,7 @@ use yii\mail\BaseMessage;
  * @method Mailer getMailer() returns mailer instance.
  *
  * @property \Swift_Message $swiftMessage Swift message instance. This property is read-only.
+ * @property array|callable|\Swift_Signer $signature message signature. This property is write-only.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 2.0
