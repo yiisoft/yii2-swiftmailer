@@ -19,7 +19,8 @@ class MessageTest extends TestCase
     /**
      * @var string test email address, which will be used as receiver for the messages.
      */
-    protected $testEmailReceiver = 'someuser@somedomain.com';
+    //protected $testEmailReceiver = 'someuser@somedomain.com';
+    protected $testEmailReceiver = 'klimov.paul@gmail.com';
 
     public function setUp()
     {
@@ -110,6 +111,24 @@ class MessageTest extends TestCase
         return $attachment;
     }
 
+    /**
+     * @param Message $message
+     * @return array list of attached swift signers
+     */
+    protected function getSwiftSigners(Message $message)
+    {
+        $swiftMessage = $message->getSwiftMessage();
+        $reflection = new \ReflectionObject($message->getSwiftMessage());
+        $headerSignersReflection = $reflection->getProperty('headerSigners');
+        $headerSignersReflection->setAccessible(true);
+        $bodySignersReflection = $reflection->getProperty('bodySigners');
+        $bodySignersReflection->setAccessible(true);
+        return array_merge(
+            $headerSignersReflection->getValue($swiftMessage),
+            $bodySignersReflection->getValue($swiftMessage)
+        );
+    }
+
     // Tests :
 
     public function testGetSwiftMessage()
@@ -186,6 +205,37 @@ class MessageTest extends TestCase
         $this->assertContains('Bcc: ' . $bcc, $messageString, 'Incorrect "Bcc" header!');
     }
 
+    public function testSetupSignature()
+    {
+        $message = new Message();
+
+        $message->addSignature([
+            'type' => 'dkim',
+            'key' => 'private key',
+        ]);
+        $signers = $this->getSwiftSigners($message);
+        $this->assertTrue($signers[0] instanceof \Swift_Signers_DKIMSigner);
+
+        $signer = new \Swift_Signers_DKIMSigner('manual', null, null);
+        $message->addSignature($signer);
+        $signers = $this->getSwiftSigners($message);
+        $this->assertSame($signer, $signers[1]);
+
+        $signer = new \Swift_Signers_DKIMSigner('callable', null, null);
+        $message->addSignature(function () use ($signer) {
+            return $signer;
+        });
+        $signers = $this->getSwiftSigners($message);
+        $this->assertSame($signer, $signers[2]);
+
+        $message->setSignature([
+            'type' => 'dkim',
+            'key' => 'override',
+        ]);
+        $signers = $this->getSwiftSigners($message);
+        $this->assertCount(1, $signers);
+    }
+
     /**
      * @depends testGetSwiftMessage
      */
@@ -196,6 +246,52 @@ class MessageTest extends TestCase
         $message->setFrom('someuser@somedomain.com');
         $message->setSubject('Yii Swift Test');
         $message->setTextBody('Yii Swift Test body');
+        $this->assertTrue($message->send());
+    }
+
+    /**
+     * @depends testSend
+     */
+    public function testSendSigned()
+    {
+        $privateKey = "-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAyehiMTRxvfQz8nbQQAgL481QipVMF+E7ljWKHTQQSYfqktR+
+zFYqX81vKeK9/2D6AiK5KJSBVdF7aURasppuDaxFJWrPvacd3IQCrGxsGkwwlWPO
+ggB1WpOEKhVUZnGzdm96Fk23oHFKrEiQlSG0cB9P/wUKz57b8tsaPve5sKBG0Kww
+9YIDRM0x4w3c9fupPz8H5p2HHn4uPbn+whJyALZHD1+CftIGOHq8AUH4w4Z7bjF4
+DD4zibpgRn96BVaRIJjxZdlKq69v52j3v8O8SAqSkWmpDWiIsm85Gl00Loay6iiJ
+XNy11y0sUysFeCSpb/9cRyxb6j0jEwQXrw0J/QIDAQABAoIBAQCFuRgXeKGAalVh
+V5mTXwDo7hlSv5C3HCBH2svPjaTf3lnYx033bXYBH2Fpf1fQ5NyQP4kcPEbwnJ48
+2N2s/qS2/4qIPpa6CA259+CBbAmo3R8sQf8KkN0okRzudlQAyXtPjINydCSS6ZXI
+RwMjEkCcJdDomOFRIuiPjtdyLsXYGRAa95yjpTU0ri1mEJocX6tlchlgUsjwc2ml
+rCTKLc6b3KtYNYUZ/Rg0HzWRIhkbQFIz7uS0t7gF3sqDOLcaoWIv2rmrpg5T0suA
+e5Sz7nK2XBeaPi/AKNCVoXJiCJ6SU6A+6Q4T5Rvnt+uxGpLKiilb/fRpQaq1RFO9
+k5BDPgftAoGBAPyYBPrTPYPYGosqzbFypNaWLOUnjkdFxlThpwvLOa7nzwVcsQ8V
+EXDkELNYy/jOYJLsNhhZ+bGAwWdNV46pdurFKuzS4vb11RfZCc3BTM05IFUFrKir
+YVgWw5AYKJLkUiACASEP55P8j2cKocCV5SdI0sGyU7W+3S1NbhBOlr0nAoGBAMyh
+Y/Ki5wo3LX43l9F1I2HnKVJSj2XzpWTSYco8sUbS4yUBVk9qPBjIHhT+mK2k2FqD
+bSWsu5tGVfaMlFbYxXnSBqjIQfHRLWWVmWMr5sLFk0aJyY1mjGh6BEhTp/Xs86/w
+cdVlI1N5blxPy4VvoLmHIb/O1xqi64FV1gW7gD47AoGAErFlXPKZENLDVB08z67+
+R+shM2wz+U5OmSWB6TuG70y0Y18ysz0J52LZYYxmu+j5+KWGc1LlSZ+PsIdmvWYJ
+KOKihJgut7wFoxgqw5FUj7N0kxYyauET+SLmIhnHludStI+xabL1nlwIeMWupsPx
+C3E2N6Ns0nxnfdzHEmneee0CgYA5kF0RcIoV8Ze2neTzY0Rk0iZpphf40iWAyz3/
+KjukdMa5LjsddAEb54+u0EAa+Phz3eziYEkWUR71kG5aT/idYFvHNy513CYtIXxY
+zYzI1dOsUC6GvIZbDZgO0Jm7MMEMiVM8eIsLfGlzRm82RkSsbDsuPf183L/rTj46
+tphI6QKBgQDobarzJhVUdME4QKAlhJecKBO1xlVCXWbKGdRcJn0Gzq6iwZKdx64C
+hQGpKaZBDDCHLk7dDzoKXF1udriW9EcImh09uIKGYYWS8poy8NUzmZ3fy/1o2C2O
+U41eAdnQ3dDGzUNedIJkSh6Z0A4VMZIEOag9hPNYqQXZBQgfobvPKw==
+-----END RSA PRIVATE KEY-----
+";
+
+        $message = $this->createTestMessage();
+        $message->setTo($this->testEmailReceiver);
+        $message->setFrom('someuser@somedomain.com');
+        $message->setSubject('Signed message');
+        $message->setTextBody('Signed message body');
+        $message->setSignature([
+            'type' => 'dkim',
+            'key' => $privateKey,
+        ]);
         $this->assertTrue($message->send());
     }
 
