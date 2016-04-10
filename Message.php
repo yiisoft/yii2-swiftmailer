@@ -7,6 +7,9 @@
 
 namespace yii\swiftmailer;
 
+use Yii;
+use yii\base\InvalidConfigException;
+use yii\helpers\ArrayHelper;
 use yii\mail\BaseMessage;
 
 /**
@@ -18,6 +21,7 @@ use yii\mail\BaseMessage;
  * @method Mailer getMailer() returns mailer instance.
  *
  * @property \Swift_Message $swiftMessage Swift message instance. This property is read-only.
+ * @property array|callable|\Swift_Signer $signature message signature. This property is write-only.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 2.0
@@ -28,6 +32,10 @@ class Message extends BaseMessage
      * @var \Swift_Message Swift message instance.
      */
     private $_swiftMessage;
+    /**
+     * @var \Swift_Signer[] attached signers
+     */
+    private $signers = [];
 
 
     /**
@@ -298,6 +306,96 @@ class Message extends BaseMessage
         }
 
         return $this->getSwiftMessage()->embed($embedFile);
+    }
+
+    /**
+     * Sets message signature
+     * @param array|callable|\Swift_Signer $signature signature specification.
+     * See [[addSignature()]] for details on how it should be specified.
+     * @return $this self reference.
+     * @since 2.0.6
+     */
+    public function setSignature($signature)
+    {
+        if (!empty($this->signers)) {
+            // clear previously set signers
+            $swiftMessage = $this->getSwiftMessage();
+            foreach ($this->signers as $signer) {
+                $swiftMessage->detachSigner($signer);
+            }
+            $this->signers = [];
+        }
+        return $this->addSignature($signature);
+    }
+
+    /**
+     * Adds message signature.
+     * @param array|callable|\Swift_Signer $signature signature specification, this can be:
+     *
+     * - [[\Swift_Signer]] instance
+     * - callable, which returns [[\Swift_Signer]] instance
+     * - configuration array for the signer creation
+     *
+     * @return $this self reference
+     * @throws InvalidConfigException on invalid signature configuration
+     * @since 2.0.6
+     */
+    public function addSignature($signature)
+    {
+        if ($signature instanceof \Swift_Signer) {
+            $signer = $signature;
+        } elseif (is_callable($signature)) {
+            $signer = call_user_func($signature);
+        } elseif (is_array($signature)) {
+            $signer = $this->createSwiftSigner($signature);
+        } else {
+            throw new InvalidConfigException('Signature should be instance of "Swift_Signer", callable or array configuration');
+        }
+
+        $this->getSwiftMessage()->attachSigner($signer);
+        $this->signers[] = $signer;
+
+        return $this;
+    }
+
+    /**
+     * Creates signer from its configuration
+     * @param array $signature signature configuration
+     * @return \Swift_Signer signer instance
+     * @throws InvalidConfigException on invalid configuration provided
+     * @since 2.0.6
+     */
+    protected function createSwiftSigner($signature)
+    {
+        if (!isset($signature['type'])) {
+            throw new InvalidConfigException('Signature configuration should contain "type" key');
+        }
+        switch (strtolower($signature['type'])) {
+            case 'dkim' :
+                $domain = ArrayHelper::getValue($signature, 'domain', null);
+                $selector = ArrayHelper::getValue($signature, 'selector', null);
+                if (isset($signature['key'])) {
+                    $privateKey = $signature['key'];
+                } elseif (isset($signature['file'])) {
+                    $privateKey = file_get_contents(Yii::getAlias($signature['file']));
+                } else {
+                    throw new InvalidConfigException("Either 'key' or 'file' signature option should be specified");
+                }
+                return new \Swift_Signers_DKIMSigner($privateKey, $domain, $selector);
+            case 'opendkim' :
+                $domain = ArrayHelper::getValue($signature, 'domain', null);
+                $selector = ArrayHelper::getValue($signature, 'selector', null);
+                if (isset($signature['key'])) {
+                    $privateKey = $signature['key'];
+                } elseif (isset($signature['file'])) {
+                    $privateKey = file_get_contents(Yii::getAlias($signature['file']));
+                } else {
+                    throw new InvalidConfigException("Either 'key' or 'file' signature option should be specified");
+                }
+                return new \Swift_Signers_OpenDKIMSigner($privateKey, $domain, $selector);
+            default:
+                throw new InvalidConfigException("Unrecognized signature type '{$signature['type']}'");
+        }
     }
 
     /**
