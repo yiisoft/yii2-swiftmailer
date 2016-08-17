@@ -359,6 +359,20 @@ class Message extends BaseMessage
     }
 
     /**
+     * Adds read receipt for the message.
+     * @param string $receiptTo The e-mail address that will receive the read receipt.
+     *
+     * @return $this self reference
+     * @since 2.0.6
+     */
+    public function setReadReceiptTo($receiptTo)
+    {
+        $this->getSwiftMessage()->setReadReceiptTo($receiptTo);
+
+        return $this;
+    }
+
+    /**
      * Creates signer from its configuration
      * @param array $signature signature configuration
      * @return \Swift_Signer signer instance

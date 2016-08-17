@@ -5,6 +5,7 @@ Yii Framework 2 swiftmailer extension Change Log
 -----------------------
 
 - Enh #27: Added ability to specify message signature (klimov-paul)
+- Enh #32: Added ability to request read receipt (lourdas)
 
 
 2.0.5 March 17, 2016
