@@ -399,6 +399,25 @@ class Message extends BaseMessage
     }
 
     /**
+     * @inheritdoc
+     */
+    public function toString()
+    {
+        return $this->getSwiftMessage()->toString();
+    }
+
+    /**
+     * Creates the Swift email message instance.
+     * @return \Swift_Message email message instance.
+     */
+    protected function createSwiftMessage()
+    {
+        return new \Swift_Message();
+    }
+
+    // Headers setup :
+
+    /**
      * Adds custom header value to the message.
      * Several invocations of this method with the same name will add multiple header values.
      * @param string $name header name.
@@ -454,20 +473,73 @@ class Message extends BaseMessage
         return $headers;
     }
 
+    // SwiftMessage shortcuts :
+
     /**
-     * @inheritdoc
+     * Set the return-path (the bounce address) of this message.
+     * @param string $address the bounce email address.
+     * @return $this self reference.
+     * @since 2.0.6
      */
-    public function toString()
+    public function setReturnPath($address)
     {
-        return $this->getSwiftMessage()->toString();
+        $this->getSwiftMessage()->setReturnPath($address);
+        return $this;
     }
 
     /**
-     * Creates the Swift email message instance.
-     * @return \Swift_Message email message instance.
+     * Returns the return-path (the bounce address) of this message.
+     * @return string the bounce email address.
+     * @since 2.0.6
      */
-    protected function createSwiftMessage()
+    public function getReturnPath()
     {
-        return new \Swift_Message();
+        return $this->getSwiftMessage()->getReturnPath();
+    }
+
+    /**
+     * Set the priority of this message.
+     * @param integer $priority priority value, should be an integer in range: `1..5`,
+     * where 1 is the highest priority and 5 is the lowest.
+     * @return $this self reference.
+     * @since 2.0.6
+     */
+    public function setPriority($priority)
+    {
+        $this->getSwiftMessage()->setPriority($priority);
+        return $this;
+    }
+
+    /**
+     * Returns the priority of this message.
+     * @return integer priority value as integer in range: `1..5`,
+     * where 1 is the highest priority and 5 is the lowest.
+     * @since 2.0.6
+     */
+    public function getPriority()
+    {
+        return $this->getSwiftMessage()->getPriority();
+    }
+
+    /**
+     * Sets the ask for a delivery receipt from the recipient to be sent to $addresses.
+     * @param string|array $addresses receipt receive email address(es).
+     * @return $this self reference.
+     * @since 2.0.6
+     */
+    public function setReadReceiptTo($addresses)
+    {
+        $this->getSwiftMessage()->setReadReceiptTo($addresses);
+        return $this;
+    }
+
+    /**
+     * Get the addresses to which a read-receipt will be sent.
+     * @return string receipt receive email addresses.
+     * @since 2.0.6
+     */
+    public function getReadReceiptTo()
+    {
+        return $this->getSwiftMessage()->getReadReceiptTo();
     }
 }

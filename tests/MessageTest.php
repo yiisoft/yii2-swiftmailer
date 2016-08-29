@@ -185,6 +185,8 @@ class MessageTest extends TestCase
         $to = 'someuser@somedomain.com';
         $cc = 'ccuser@somedomain.com';
         $bcc = 'bccuser@somedomain.com';
+        $returnPath = 'bounce@somedomain.com';
+        $readReceiptTo = 'notify@somedomain.com';
 
         $messageString = $this->createTestMessage()
             ->setCharset($charset)
@@ -194,6 +196,9 @@ class MessageTest extends TestCase
             ->setTo($to)
             ->setCc($cc)
             ->setBcc($bcc)
+            ->setReturnPath($returnPath)
+            ->setPriority(2)
+            ->setReadReceiptTo($readReceiptTo)
             ->toString();
 
         $this->assertContains('charset=' . $charset, $messageString, 'Incorrect charset!');
@@ -203,6 +208,9 @@ class MessageTest extends TestCase
         $this->assertContains('To: ' . $to, $messageString, 'Incorrect "To" header!');
         $this->assertContains('Cc: ' . $cc, $messageString, 'Incorrect "Cc" header!');
         $this->assertContains('Bcc: ' . $bcc, $messageString, 'Incorrect "Bcc" header!');
+        $this->assertContains("Return-Path: <{$returnPath}>", $messageString, 'Incorrect "Return-Path" header!');
+        $this->assertContains("X-Priority: 2 (High)", $messageString, 'Incorrect "Priority" header!');
+        $this->assertContains('Disposition-Notification-To: ' . $readReceiptTo, $messageString, 'Incorrect "Disposition-Notification-To" header!');
     }
 
     public function testSetupSignature()
