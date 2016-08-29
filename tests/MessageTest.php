@@ -176,7 +176,7 @@ class MessageTest extends TestCase
     /**
      * @depends testGetSwiftMessage
      */
-    public function testSetupHeaders()
+    public function testSetupHeaderShortcuts()
     {
         $charset = 'utf-16';
         $subject = 'Test Subject';
@@ -457,5 +457,38 @@ U41eAdnQ3dDGzUNedIJkSh6Z0A4VMZIEOag9hPNYqQXZBQgfobvPKw==
         $message->setTextBody('some text override');
         $content = $message->toString();
         $this->assertEquals(2, substr_count($content, $charset), 'Wrong charset for alternative body override.');
+    }
+
+    /**
+     * @depends testGetSwiftMessage
+     */
+    public function testSetupHeaders()
+    {
+        $messageString = $this->createTestMessage()
+            ->addHeader('Some', 'foo')
+            ->addHeader('Multiple', 'value1')
+            ->addHeader('Multiple', 'value2')
+            ->toString();
+
+        $this->assertContains('Some: foo', $messageString, 'Unable to add header!');
+        $this->assertContains('Multiple: value1', $messageString, 'First value of multiple header lost!');
+        $this->assertContains('Multiple: value2', $messageString, 'Second value of multiple header lost!');
+
+        $messageString = $this->createTestMessage()
+            ->setHeader('Some', 'foo')
+            ->setHeader('Some', 'override')
+            ->setHeader('Multiple', ['value1', 'value2'])
+            ->toString();
+
+        $this->assertContains('Some: override', $messageString, 'Unable to set header!');
+        $this->assertNotContains('Some: foo', $messageString, 'Unable to override header!');
+        $this->assertContains('Multiple: value1', $messageString, 'First value of multiple header lost!');
+        $this->assertContains('Multiple: value2', $messageString, 'Second value of multiple header lost!');
+
+        $message = $this->createTestMessage();
+        $message->setHeader('Some', 'foo');
+        $this->assertEquals(['foo'], $message->getHeader('Some'));
+        $message->setHeader('Multiple', ['value1', 'value2']);
+        $this->assertEquals(['value1', 'value2'], $message->getHeader('Multiple'));
     }
 }

@@ -399,6 +399,62 @@ class Message extends BaseMessage
     }
 
     /**
+     * Adds custom header value to the message.
+     * Several invocations of this method with the same name will add multiple header values.
+     * @param string $name header name.
+     * @param string $value header value.
+     * @return $this self reference.
+     * @since 2.0.6
+     */
+    public function addHeader($name, $value)
+    {
+        $this->getSwiftMessage()->getHeaders()->addTextHeader($name, $value);
+        return $this;
+    }
+
+    /**
+     * Sets custom header value to the message.
+     * @param string $name header name.
+     * @param string|array $value header value or values.
+     * @return $this self reference.
+     * @since 2.0.6
+     */
+    public function setHeader($name, $value)
+    {
+        $headerSet = $this->getSwiftMessage()->getHeaders();
+
+        if ($headerSet->has($name)) {
+            $headerSet->remove($name);
+        }
+
+        foreach ((array)$value as $v) {
+            $headerSet->addTextHeader($name, $v);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns all values for the specified header.
+     * @param string $name header name.
+     * @return array header values list.
+     * @since 2.0.6
+     */
+    public function getHeader($name)
+    {
+        $headerSet = $this->getSwiftMessage()->getHeaders();
+        if (!$headerSet->has($name)) {
+            return [];
+        }
+
+        $headers = [];
+        foreach ($headerSet->getAll($name) as $header) {
+            $headers[] = $header->getValue();
+        }
+        return $headers;
+    }
+
+    /**
      * @inheritdoc
      */
     public function toString()
