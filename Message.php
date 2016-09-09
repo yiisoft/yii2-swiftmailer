@@ -20,8 +20,14 @@ use yii\mail\BaseMessage;
  *
  * @method Mailer getMailer() returns mailer instance.
  *
+ * @property integer $priority Priority value as integer in range: `1..5`, where 1 is the highest priority and
+ * 5 is the lowest.
+ * @property string $readReceiptTo Receipt receive email addresses. Note that the type of this property
+ * differs in getter and setter. See [[getReadReceiptTo()]] and [[setReadReceiptTo()]] for details.
+ * @property string $returnPath The bounce email address.
+ * @property array|callable|\Swift_Signer $signature Signature specification. See [[addSignature()]] for
+ * details on how it should be specified. This property is write-only.
  * @property \Swift_Message $swiftMessage Swift message instance. This property is read-only.
- * @property array|callable|\Swift_Signer $signature message signature. This property is write-only.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 2.0
