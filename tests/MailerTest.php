@@ -7,11 +7,6 @@ use yii\swiftmailer\Mailer;
 
 Yii::setAlias('@yii/swiftmailer', __DIR__ . '/../../../../extensions/swiftmailer');
 
-/**
- * @group vendor
- * @group mail
- * @group swiftmailer
- */
 class MailerTest extends TestCase
 {
     public function setUp()

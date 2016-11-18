@@ -4,7 +4,7 @@ Yii Framework 2 swiftmailer extension Change Log
 2.0.7 under development
 -----------------------
 
-- no changes in this release.
+- Enh #37: `yii\swiftmailer\Logger` now chooses logging level depending on incoming entry format (klimov-paul)
 
 
 2.0.6 September 09, 2016

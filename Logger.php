@@ -37,7 +37,25 @@ class Logger implements \Swift_Plugins_Logger
      */
     public function add($entry)
     {
-        Yii::info($entry, __METHOD__);
+        $categoryPrefix = substr($entry, 0, 2);
+        switch ($categoryPrefix) {
+            case '++':
+                $level = \yii\log\Logger::LEVEL_TRACE;
+                break;
+            case '>>':
+            case '<<':
+                $level = \yii\log\Logger::LEVEL_INFO;
+                break;
+            case '!!':
+                $level = \yii\log\Logger::LEVEL_WARNING;
+                break;
+        }
+
+        if (!isset($level)) {
+            $level = \yii\log\Logger::LEVEL_INFO;
+        }
+
+        Yii::getLogger()->log($entry, $level, __METHOD__);
     }
 
     /**
