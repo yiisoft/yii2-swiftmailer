@@ -80,7 +80,7 @@ class Mailer extends BaseMailer
      */
     public $messageClass = 'yii\swiftmailer\Message';
     /**
-     * @var boolean whether to enable writing of the SwiftMailer internal logs using Yii log mechanism.
+     * @var bool whether to enable writing of the SwiftMailer internal logs using Yii log mechanism.
      * If enabled [[Logger]] plugin will be attached to the [[transport]] for this purpose.
      * @see Logger
      */
