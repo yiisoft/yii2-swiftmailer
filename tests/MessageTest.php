@@ -499,4 +499,17 @@ U41eAdnQ3dDGzUNedIJkSh6Z0A4VMZIEOag9hPNYqQXZBQgfobvPKw==
         $message->setHeader('Multiple', ['value1', 'value2']);
         $this->assertEquals(['value1', 'value2'], $message->getHeader('Multiple'));
     }
+
+    public function testDefaultHeader()
+    {
+        $mailer = $this->createTestEmailComponent();
+
+        $mailer->defaultHeaders = [
+            'X-MC-Subaccount' => 'test-subaccount',
+        ];
+
+        $message = $mailer->compose();
+
+        $this->assertContains('X-MC-Subaccount: test-subaccount', $message->toString(), 'Unable to add default header!');
+    }
 }

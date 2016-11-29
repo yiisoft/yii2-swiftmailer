@@ -44,6 +44,22 @@ return [
 ];
 ```
 
+Additional headers that should be included in each email sent can be defined as follows:
+
+```
+return [
+    //....
+    'components' => [
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'defaultHeaders' => [
+                'X-MC-Subaccount' => 'subaccount'
+            ]
+        ],
+    ],
+];
+```
+
 You can then send an email as follows:
 
 ```php
