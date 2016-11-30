@@ -498,5 +498,13 @@ U41eAdnQ3dDGzUNedIJkSh6Z0A4VMZIEOag9hPNYqQXZBQgfobvPKw==
         $this->assertEquals(['foo'], $message->getHeader('Some'));
         $message->setHeader('Multiple', ['value1', 'value2']);
         $this->assertEquals(['value1', 'value2'], $message->getHeader('Multiple'));
+
+        $message = $this->createTestMessage()
+            ->setHeaders([
+                'Some' => 'foo',
+                'Multiple' => ['value1', 'value2'],
+            ]);
+        $this->assertEquals(['foo'], $message->getHeader('Some'));
+        $this->assertEquals(['value1', 'value2'], $message->getHeader('Multiple'));
     }
 }

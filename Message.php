@@ -20,6 +20,7 @@ use yii\mail\BaseMessage;
  *
  * @method Mailer getMailer() returns mailer instance.
  *
+ * @property array $headers Custom header values of the message. This property is write-only.
  * @property int $priority Priority value as integer in range: `1..5`, where 1 is the highest priority and
  * 5 is the lowest.
  * @property string $readReceiptTo Receipt receive email addresses. Note that the type of this property
@@ -477,6 +478,20 @@ class Message extends BaseMessage
             $headers[] = $header->getValue();
         }
         return $headers;
+    }
+
+    /**
+     * Sets custom header values to the message.
+     * @param array $headers headers in format: `[name => value]`.
+     * @return $this self reference.
+     * @since 2.0.7
+     */
+    public function setHeaders($headers)
+    {
+        foreach ($headers as $name => $value) {
+            $this->setHeader($name, $value);
+        }
+        return $this;
     }
 
     // SwiftMessage shortcuts :
