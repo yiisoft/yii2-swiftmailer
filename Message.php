@@ -44,6 +44,10 @@ class Message extends BaseMessage
      */
     private $signers = [];
 
+    public function __clone()
+    {
+        $this->_swiftMessage = clone $this->_swiftMessage;
+    }
 
     /**
      * @return \Swift_Message Swift message instance.

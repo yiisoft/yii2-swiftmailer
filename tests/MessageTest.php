@@ -140,6 +140,21 @@ class MessageTest extends TestCase
     /**
      * @depends testGetSwiftMessage
      */
+    public function testClone()
+    {
+        $m1 = new Message();
+        $m1->setFrom('user@example.com');
+        $m2 = clone $m1;
+        $m1->setTo(['user1@example.com' => 'user1']);
+        $m2->setTo(['user2@example.com' => 'user2']);
+
+        $this->assertEquals(['user1@example.com' => 'user1'], $m1->getTo());
+        $this->assertEquals(['user2@example.com' => 'user2'], $m2->getTo());
+    }
+
+    /**
+     * @depends testGetSwiftMessage
+     */
     public function testSetGet()
     {
         $message = new Message();
