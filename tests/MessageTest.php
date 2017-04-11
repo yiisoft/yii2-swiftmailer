@@ -174,6 +174,25 @@ class MessageTest extends TestCase
     }
 
     /**
+     * @depends testSetGet
+     */
+    public function testClone()
+    {
+        $m1 = new Message();
+        $m1->setFrom('user@example.com');
+        $m2 = clone $m1;
+        $m1->setTo(['user1@example.com' => 'user1']);
+        $m2->setTo(['user2@example.com' => 'user2']);
+
+        $this->assertEquals(['user1@example.com' => 'user1'], $m1->getTo());
+        $this->assertEquals(['user2@example.com' => 'user2'], $m2->getTo());
+
+        $messageWithoutSwiftInitialized = new Message();
+        $m2 = clone $messageWithoutSwiftInitialized; // should be no error during cloning
+        $this->assertTrue($m2 instanceof Message);
+    }
+
+    /**
      * @depends testGetSwiftMessage
      */
     public function testSetupHeaderShortcuts()

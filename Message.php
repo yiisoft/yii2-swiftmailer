@@ -46,6 +46,18 @@ class Message extends BaseMessage
 
 
     /**
+     * This method is called after the object is created by cloning an existing one.
+     * It ensures [[swiftMessage]] is also cloned.
+     * @since 2.0.7
+     */
+    public function __clone()
+    {
+        if (is_object($this->_swiftMessage)) {
+            $this->_swiftMessage = clone $this->_swiftMessage;
+        }
+    }
+
+    /**
      * @return \Swift_Message Swift message instance.
      */
     public function getSwiftMessage()
