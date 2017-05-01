@@ -20,9 +20,9 @@ use yii\mail\BaseMessage;
  *
  * @method Mailer getMailer() returns mailer instance.
  *
- * @property array $headers Custom header values of the message. This property is write-only.
- * @property int $priority Priority value as integer in range: `1..5`, where 1 is the highest priority and
- * 5 is the lowest.
+ * @property array $headers Headers in format: `[name => value]`. This property is write-only.
+ * @property int $priority Priority value as integer in range: `1..5`, where 1 is the highest priority and 5
+ * is the lowest.
  * @property string $readReceiptTo Receipt receive email addresses. Note that the type of this property
  * differs in getter and setter. See [[getReadReceiptTo()]] and [[setReadReceiptTo()]] for details.
  * @property string $returnPath The bounce email address.

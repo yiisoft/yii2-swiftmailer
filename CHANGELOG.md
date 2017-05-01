@@ -1,8 +1,8 @@
 Yii Framework 2 swiftmailer extension Change Log
 ================================================
 
-2.0.7 under development
------------------------
+2.0.7 May 01, 2017
+------------------
 
 - Bug #46: Fixed `yii\swiftmailer\Message` does not clones `$swiftMessage` during its own cloning (evpav, klimov-paul)
 - Enh #37: `yii\swiftmailer\Logger` now chooses logging level depending on incoming entry format (klimov-paul)
