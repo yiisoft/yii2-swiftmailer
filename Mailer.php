@@ -90,6 +90,11 @@ class Mailer extends BaseMailer
     public $enableSwiftMailerLogging = false;
 
     /**
+     * @var array custom default headers that should be applied to all messages sent
+     */
+    public $defaultHeaders = [];
+
+    /**
      * @var \Swift_Mailer Swift mailer instance.
      */
     private $_swiftMailer;
@@ -97,7 +102,6 @@ class Mailer extends BaseMailer
      * @var \Swift_Transport|array Swift transport instance or its array configuration.
      */
     private $_transport = [];
-
 
     /**
      * @return array|\Swift_Mailer Swift mailer instance or array configuration.
@@ -248,5 +252,24 @@ class Mailer extends BaseMailer
         }
 
         return $object;
+    }
+
+    /**
+     * Add default parameters to the message while composing it.
+     * @param null $view
+     * @param array $params
+     * @return Message
+     */
+    public function compose($view = null, array $params = [])
+    {
+        /** @var Message $message */
+        $message = parent::compose($view, $params);
+
+        // add any default headers to the message
+        foreach ($this->defaultHeaders as $key => $val) {
+            $message->addHeader($key, $val);
+        }
+
+        return $message;
     }
 }
