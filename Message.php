@@ -98,9 +98,9 @@ class Message extends BaseMessage
     /**
      * @inheritdoc
      */
-    public function setFrom($from)
+    public function setFrom($from, $name = null)
     {
-        $this->getSwiftMessage()->setFrom($from);
+        $this->getSwiftMessage()->setFrom($from, $name);
 
         return $this;
     }
