@@ -86,6 +86,16 @@ class Message extends BaseMessage
 
         return $this;
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function setReturnPath($bounceEmail)
+    {
+        $this->getSwiftMessage()->setReturnPath($bounceEmail);
+
+        return $this;
+    }
 
     /**
      * @inheritdoc
