@@ -37,7 +37,7 @@ use yii\mail\BaseMailer;
  * ```
  *
  * You may also skip the configuration of the [[transport]] property. In that case, the default
- * PHP `mail()` function will be used to send emails.
+ * `\Swift_SendmailTransport` transport will be used to send emails.
  *
  * You specify the transport constructor arguments using 'constructArgs' key in the config.
  * You can also specify the list of plugins, which should be registered to the transport using
@@ -140,6 +140,7 @@ class Mailer extends BaseMailer
      */
     protected function sendMessage($message)
     {
+        /* @var $message Message */
         $address = $message->getTo();
         if (is_array($address)) {
             $address = implode(', ', array_keys($address));
@@ -155,7 +156,7 @@ class Mailer extends BaseMailer
      */
     protected function createSwiftMailer()
     {
-        return \Swift_Mailer::newInstance($this->getTransport());
+        return new \Swift_Mailer($this->getTransport());
     }
 
     /**
@@ -167,7 +168,7 @@ class Mailer extends BaseMailer
     protected function createTransport(array $config)
     {
         if (!isset($config['class'])) {
-            $config['class'] = 'Swift_MailTransport';
+            $config['class'] = 'Swift_SendmailTransport';
         }
         if (isset($config['plugins'])) {
             $plugins = $config['plugins'];
@@ -187,7 +188,7 @@ class Mailer extends BaseMailer
             ];
         }
 
-        /* @var $transport \Swift_MailTransport */
+        /* @var $transport \Swift_Transport */
         $transport = $this->createSwiftObject($config);
         if (!empty($plugins)) {
             foreach ($plugins as $plugin) {

@@ -34,7 +34,7 @@ class MailerTest extends TestCase
     {
         $mailer = new Mailer();
 
-        $transport = \Swift_MailTransport::newInstance();
+        $transport = new \Swift_SendmailTransport();
         $mailer->setTransport($transport);
         $this->assertEquals($transport, $mailer->getTransport(), 'Unable to setup transport!');
     }

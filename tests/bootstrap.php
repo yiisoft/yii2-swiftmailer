@@ -13,5 +13,3 @@ require_once(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');
 
 Yii::setAlias('@yiiunit/extensions/swiftmailer', __DIR__);
 Yii::setAlias('@yii/swiftmailer', dirname(__DIR__));
-
-require_once(__DIR__ . '/compatibility.php');
