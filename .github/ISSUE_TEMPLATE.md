@@ -7,8 +7,10 @@
 
 ### Additional info
 
-| Q                | A
-| ---------------- | ---
-| Yii version      |
-| PHP version      |
-| Operating system |
+| Q                       | A
+| ----------------------- | ---
+| Yii version             |
+| Yii SwiftMailer version |
+| SwiftMailer version     |
+| PHP version             |
+| Operating system        |
