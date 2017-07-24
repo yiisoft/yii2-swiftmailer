@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://swiftmailer.symfony.com/" target="_blank" rel="external">
-        <img src="https://swiftmailer.symfony.com/images/logo.png" height="68px">
+        <img src="https://swiftmailer.symfony.com/images/logo.png" height="68px" style="background-color:#2a4fb7">
     </a>
     <h1 align="center">SwiftMailer Extension for Yii 2</h1>
     <br>
