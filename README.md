@@ -33,6 +33,14 @@ or add
 
 to the require section of your composer.json.
 
+> Note: Version 2.1 of this extensions uses Swiftmailer 6, which requires PHP 7. If you are using PHP 5, 
+> you have to use version 2.0 of this extension, which uses Swiftmailer 5, which is compatible with 
+> PHP 5.4 and higher. Use the following version constraint in that case:
+> 
+> ```json
+> "yiisoft/yii2-swiftmailer": "~2.1.0"
+> ```
+
 Usage
 -----
 
