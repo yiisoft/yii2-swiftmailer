@@ -38,7 +38,7 @@ to the require section of your composer.json.
 > PHP 5.4 and higher. Use the following version constraint in that case:
 > 
 > ```json
-> "yiisoft/yii2-swiftmailer": "~2.1.0"
+> "yiisoft/yii2-swiftmailer": "~2.0.0"
 > ```
 
 Usage
