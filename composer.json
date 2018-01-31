@@ -28,7 +28,7 @@
         }
     ],
     "autoload": {
-        "psr-4": { "yii\\swiftmailer\\": "" }
+        "psr-4": { "yii\\swiftmailer\\": "src" }
     },
     "extra": {
         "branch-alias": {
