@@ -33,10 +33,11 @@ class MailerTest extends TestCase
     public function testSetupTransport()
     {
         $mailer = new Mailer();
+        $mailer->getSwiftMailer(); // make sure accessing SwiftMailer does not affect behavior of setTransport
 
         $transport = new \Swift_SendmailTransport();
         $mailer->setTransport($transport);
-        $this->assertEquals($transport, $mailer->getTransport(), 'Unable to setup transport!');
+        $this->assertSame($transport, $mailer->getSwiftMailer()->getTransport(), 'Unable to setup transport!');
     }
 
     /**
