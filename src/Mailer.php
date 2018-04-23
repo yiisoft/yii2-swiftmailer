@@ -121,6 +121,7 @@ class Mailer extends BaseMailer
             throw new InvalidConfigException('"' . get_class($this) . '::transport" should be either object or array, "' . gettype($transport) . '" given.');
         }
         $this->_transport = $transport;
+        $this->_swiftMailer = null;
     }
 
     /**
