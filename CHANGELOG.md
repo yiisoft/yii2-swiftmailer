@@ -4,7 +4,7 @@ Yii Framework 2 swiftmailer extension Change Log
 2.1.2 under development
 -----------------------
 
-- no changes in this release.
+- Added ability to specify the disposition of an attachment by supplying a `setDisposition` value when embedding content in a message
 
 
 2.1.1 April 25, 2018
