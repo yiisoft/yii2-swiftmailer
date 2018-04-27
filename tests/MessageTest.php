@@ -356,13 +356,15 @@ U41eAdnQ3dDGzUNedIJkSh6Z0A4VMZIEOag9hPNYqQXZBQgfobvPKw==
         $message->setTextBody('Yii Swift Create Attachment Test body');
         $fileName = 'test.txt';
         $fileContent = 'Test attachment content';
-        $message->attachContent($fileContent, ['fileName' => $fileName]);
+        $message->attachContent($fileContent, ['fileName' => $fileName, 'contentType' => 'image/png', 'setDisposition' => 'inline']);
 
         $this->assertTrue($message->send());
 
         $attachment = $this->getAttachment($message);
         $this->assertTrue(is_object($attachment), 'No attachment found!');
         $this->assertEquals($fileName, $attachment->getFilename(), 'Invalid file name!');
+        $this->assertEquals('image/png', $attachment->getContentType(), 'Invalid content type!');
+        $this->assertEquals('inline', $attachment->getDisposition(), 'Invalid disposition!');
     }
 
     /**

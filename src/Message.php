@@ -290,6 +290,9 @@ class Message extends BaseMessage
         if (!empty($options['contentType'])) {
             $attachment->setContentType($options['contentType']);
         }
+        if (!empty($options['setDisposition'])) {
+          $attachment->setDisposition($options['setDisposition']);
+        }
         $this->getSwiftMessage()->attach($attachment);
 
         return $this;
