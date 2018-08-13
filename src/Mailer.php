@@ -133,6 +133,11 @@ class Mailer extends BaseMailer
             $this->_transport = $this->createTransport($this->_transport);
         }
 
+        if (!$this->_transport->ping()) {
+            $this->_transport->stop();
+            $this->_transport->start();
+        }
+
         return $this->_transport;
     }
 
