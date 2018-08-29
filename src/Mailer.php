@@ -108,6 +108,11 @@ class Mailer extends BaseMailer
             $this->_swiftMailer = $this->createSwiftMailer();
         }
 
+        if (!$this->_transport->ping()) {
+            $this->_transport->stop();
+            $this->_transport->start();
+        }
+
         return $this->_swiftMailer;
     }
 
@@ -131,11 +136,6 @@ class Mailer extends BaseMailer
     {
         if (!is_object($this->_transport)) {
             $this->_transport = $this->createTransport($this->_transport);
-        }
-
-        if (!$this->_transport->ping()) {
-            $this->_transport->stop();
-            $this->_transport->start();
         }
 
         return $this->_transport;
