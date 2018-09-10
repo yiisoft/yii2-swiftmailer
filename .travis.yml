@@ -14,6 +14,7 @@ cache:
     - $HOME/.composer/cache
 
 install:
+  - sudo apt-get install -y sendmail
   - travis_retry composer self-update && composer --version
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - travis_retry composer install --prefer-dist --no-interaction
