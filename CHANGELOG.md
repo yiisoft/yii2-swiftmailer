@@ -6,6 +6,7 @@ Yii Framework 2 swiftmailer extension Change Log
 
 - Enh #63: Added ability to specify the disposition of an attachment by supplying a `setDisposition` value when embedding content in a message (CorWatts)
 - Bug #67: If transport is gone, try to restart transport (mikk150)
+- Bug #67: Test if transport is gone each time someone tries to send email, not if connection is initially made (mikk150)
 
 2.1.1 April 25, 2018
 --------------------
