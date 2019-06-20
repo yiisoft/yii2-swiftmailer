@@ -429,6 +429,16 @@ class Message extends BaseMessage
     }
 
     /**
+     * Returns decoded string representation of this message.
+     * Use for testing with codeception.
+     * @return string the decoded string representation of this message.
+     */
+    public function toStringDecoded()
+    {
+        return quoted_printable_decode($this->toString());
+    }
+
+    /**
      * Creates the Swift email message instance.
      * @return \Swift_Message email message instance.
      */
