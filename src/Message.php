@@ -144,6 +144,16 @@ class Message extends BaseMessage
     /**
      * @inheritdoc
      */
+    public function addTo($address, $name = null)
+    {
+        $this->getSwiftMessage()->addTo($address, $name);
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getCc()
     {
         return $this->getSwiftMessage()->getCc();
