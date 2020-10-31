@@ -16,6 +16,8 @@ jobs:
                 php: ['7.2', '7.3', '7.4', '8.0']
 
         steps:
+            - name: Install sendmail
+              run: sudo apt-get install -y sendmail
             - name: Checkout
               uses: actions/checkout@v2
             - name: Install PHP
