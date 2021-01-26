@@ -46,7 +46,7 @@ use yii\mail\BaseMailer;
  * ```php
  * 'transport' => [
  *     'class' => 'Swift_SmtpTransport',
- *     'constructArgs' => ['localhost', 25]
+ *     'constructArgs' => ['localhost', 25],
  *     'plugins' => [
  *         [
  *             'class' => 'Swift_Plugins_ThrottlerPlugin',
