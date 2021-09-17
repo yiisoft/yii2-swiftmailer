@@ -100,7 +100,7 @@ class Mailer extends BaseMailer
 
 
     /**
-     * @return \Swift_Mailer Swift mailer instance or array configuration.
+     * @return \Swift_Mailer Swift mailer instance.
      */
     public function getSwiftMailer()
     {
