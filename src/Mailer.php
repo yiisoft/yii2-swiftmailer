@@ -100,7 +100,7 @@ class Mailer extends BaseMailer
 
 
     /**
-     * @return array|\Swift_Mailer Swift mailer instance or array configuration.
+     * @return \Swift_Mailer Swift mailer instance.
      */
     public function getSwiftMailer()
     {
@@ -130,7 +130,7 @@ class Mailer extends BaseMailer
     }
 
     /**
-     * @return array|\Swift_Transport
+     * @return \Swift_Transport
      */
     public function getTransport()
     {
