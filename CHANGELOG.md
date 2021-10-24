@@ -4,7 +4,7 @@ Yii Framework 2 swiftmailer extension Change Log
 2.1.3 under development
 -----------------------
 
-- Enh #91: Optimize `createSwiftSigner()`, `__clone()` clone signers too and fix wrong PhpDoc tags in `Message`
+- Enh #91: Optimize `createSwiftSigner()`, `__clone()` clone signers too and fix wrong PhpDoc tags in `yii\swiftmailer\Message` (WinterSilence)
 
 
 2.1.2 September 24, 2018
