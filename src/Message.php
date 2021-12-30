@@ -26,8 +26,8 @@ use yii\mail\BaseMessage;
  * @property string $readReceiptTo Receipt receive email addresses. Note that the type of this property
  * differs in getter and setter. See [[getReadReceiptTo()]] and [[setReadReceiptTo()]] for details.
  * @property string $returnPath The bounce email address.
- * @property-write array|callable|\Swift_Signer $signature Signature specification. See [[addSignature()]]
- * for details on how it should be specified.
+ * @property-write array|callable|\Swift_Signer $signature Signature specification. See [[addSignature()]] for
+ * details on how it should be specified.
  * @property-read \Swift_Message $swiftMessage Swift message instance.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
