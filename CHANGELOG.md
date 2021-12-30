@@ -1,6 +1,12 @@
 Yii Framework 2 swiftmailer extension Change Log
 ================================================
 
+2.1.4 under development
+-----------------------
+
+- no changes in this release.
+
+
 2.1.3 December 30, 2021
 -----------------------
 
