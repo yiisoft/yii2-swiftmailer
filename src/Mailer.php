@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\swiftmailer;
@@ -66,7 +66,7 @@ use yii\mail\BaseMailer;
  *     ->send();
  * ```
  *
- * @see http://swiftmailer.org
+ * @see https://swiftmailer.org
  *
  * @property-read \Swift_Mailer $swiftMailer Swift mailer instance.
  * @property-read \Swift_Transport $transport
