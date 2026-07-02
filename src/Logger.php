@@ -1,6 +1,8 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
+ *
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license https://www.yiiframework.com/license/
  */
@@ -50,6 +52,7 @@ use Yii;
  * ```
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
+ *
  * @since 2.0.4
  */
 class Logger implements \Swift_Plugins_Logger
