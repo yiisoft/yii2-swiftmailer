@@ -7,7 +7,7 @@ use yii\helpers\FileHelper;
 use yii\swiftmailer\Mailer;
 use yii\swiftmailer\Message;
 
-Yii::setAlias('@yii/swiftmailer', __DIR__.'/../../../../extensions/swiftmailer');
+Yii::setAlias('@yii/swiftmailer', __DIR__ . '/../../../../extensions/swiftmailer');
 
 /**
  * @group vendor
@@ -21,12 +21,13 @@ class MessageTest extends TestCase
      */
     protected $testEmailReceiver = 'someuser@somedomain.com';
 
+
     public function setUp()
     {
         $this->mockApplication([
             'components' => [
-                'mailer' => $this->createTestEmailComponent(),
-            ],
+                'mailer' => $this->createTestEmailComponent()
+            ]
         ]);
         $filePath = $this->getTestFilePath();
         if (!file_exists($filePath)) {
@@ -47,7 +48,7 @@ class MessageTest extends TestCase
      */
     protected function getTestFilePath()
     {
-        return Yii::getAlias('@yiiunit/extensions/swiftmailer/runtime').DIRECTORY_SEPARATOR.basename(get_class($this)).'_'.getmypid();
+        return Yii::getAlias('@yiiunit/extensions/swiftmailer/runtime') . DIRECTORY_SEPARATOR . basename(get_class($this)) . '_' . getmypid();
     }
 
     /**
@@ -72,10 +73,8 @@ class MessageTest extends TestCase
 
     /**
      * Creates image file with given text.
-     *
-     * @param string $fileName file name.
-     * @param string $text     text to be applied on image.
-     *
+     * @param  string $fileName file name.
+     * @param  string $text     text to be applied on image.
      * @return string image file full name.
      */
     protected function createImageFile($fileName = 'test.jpg', $text = 'Test Image')
@@ -83,7 +82,7 @@ class MessageTest extends TestCase
         if (!function_exists('imagecreatetruecolor')) {
             $this->markTestSkipped('GD lib required.');
         }
-        $fileFullName = $this->getTestFilePath().DIRECTORY_SEPARATOR.$fileName;
+        $fileFullName = $this->getTestFilePath() . DIRECTORY_SEPARATOR . $fileName;
         $image = imagecreatetruecolor(120, 20);
         $textColor = imagecolorallocate($image, 233, 14, 91);
         imagestring($image, 1, 5, 5, $text, $textColor);
@@ -95,9 +94,7 @@ class MessageTest extends TestCase
 
     /**
      * Finds the attachment object in the message.
-     *
-     * @param Message $message message instance
-     *
+     * @param  Message                     $message message instance
      * @return null|\Swift_Mime_Attachment attachment instance.
      */
     protected function getAttachment(Message $message)
@@ -116,7 +113,6 @@ class MessageTest extends TestCase
 
     /**
      * @param Message $message
-     *
      * @return array list of attached swift signers
      */
     protected function getSwiftSigners(Message $message)
@@ -127,7 +123,6 @@ class MessageTest extends TestCase
         $headerSignersReflection->setAccessible(true);
         $bodySignersReflection = $reflection->getProperty('bodySigners');
         $bodySignersReflection->setAccessible(true);
-
         return array_merge(
             $headerSignersReflection->getValue($swiftMessage),
             $bodySignersReflection->getValue($swiftMessage)
@@ -225,16 +220,16 @@ class MessageTest extends TestCase
             ->setReadReceiptTo($readReceiptTo)
             ->toString();
 
-        $this->assertContains('charset='.$charset, $messageString, 'Incorrect charset!');
-        $this->assertContains('Subject: '.$subject, $messageString, 'Incorrect "Subject" header!');
-        $this->assertContains('From: '.$from, $messageString, 'Incorrect "From" header!');
-        $this->assertContains('Reply-To: '.$replyTo, $messageString, 'Incorrect "Reply-To" header!');
-        $this->assertContains('To: '.$to, $messageString, 'Incorrect "To" header!');
-        $this->assertContains('Cc: '.$cc, $messageString, 'Incorrect "Cc" header!');
-        $this->assertContains('Bcc: '.$bcc, $messageString, 'Incorrect "Bcc" header!');
+        $this->assertContains('charset=' . $charset, $messageString, 'Incorrect charset!');
+        $this->assertContains('Subject: ' . $subject, $messageString, 'Incorrect "Subject" header!');
+        $this->assertContains('From: ' . $from, $messageString, 'Incorrect "From" header!');
+        $this->assertContains('Reply-To: ' . $replyTo, $messageString, 'Incorrect "Reply-To" header!');
+        $this->assertContains('To: ' . $to, $messageString, 'Incorrect "To" header!');
+        $this->assertContains('Cc: ' . $cc, $messageString, 'Incorrect "Cc" header!');
+        $this->assertContains('Bcc: ' . $bcc, $messageString, 'Incorrect "Bcc" header!');
         $this->assertContains("Return-Path: <{$returnPath}>", $messageString, 'Incorrect "Return-Path" header!');
-        $this->assertContains('X-Priority: 2 (High)', $messageString, 'Incorrect "Priority" header!');
-        $this->assertContains('Disposition-Notification-To: '.$readReceiptTo, $messageString, 'Incorrect "Disposition-Notification-To" header!');
+        $this->assertContains("X-Priority: 2 (High)", $messageString, 'Incorrect "Priority" header!');
+        $this->assertContains('Disposition-Notification-To: ' . $readReceiptTo, $messageString, 'Incorrect "Disposition-Notification-To" header!');
     }
 
     public function testSetupSignature()
@@ -243,7 +238,7 @@ class MessageTest extends TestCase
 
         $message->addSignature([
             'type' => 'dkim',
-            'key'  => 'private key',
+            'key' => 'private key',
         ]);
         $signers = $this->getSwiftSigners($message);
         $this->assertTrue($signers[0] instanceof \Swift_Signers_DKIMSigner);
@@ -262,7 +257,7 @@ class MessageTest extends TestCase
 
         $message->setSignature([
             'type' => 'dkim',
-            'key'  => 'override',
+            'key' => 'override',
         ]);
         $signers = $this->getSwiftSigners($message);
         $this->assertCount(1, $signers);
@@ -286,7 +281,7 @@ class MessageTest extends TestCase
      */
     public function testSendSigned()
     {
-        $privateKey = '-----BEGIN RSA PRIVATE KEY-----
+        $privateKey = "-----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEAyehiMTRxvfQz8nbQQAgL481QipVMF+E7ljWKHTQQSYfqktR+
 zFYqX81vKeK9/2D6AiK5KJSBVdF7aURasppuDaxFJWrPvacd3IQCrGxsGkwwlWPO
 ggB1WpOEKhVUZnGzdm96Fk23oHFKrEiQlSG0cB9P/wUKz57b8tsaPve5sKBG0Kww
@@ -313,7 +308,7 @@ tphI6QKBgQDobarzJhVUdME4QKAlhJecKBO1xlVCXWbKGdRcJn0Gzq6iwZKdx64C
 hQGpKaZBDDCHLk7dDzoKXF1udriW9EcImh09uIKGYYWS8poy8NUzmZ3fy/1o2C2O
 U41eAdnQ3dDGzUNedIJkSh6Z0A4VMZIEOag9hPNYqQXZBQgfobvPKw==
 -----END RSA PRIVATE KEY-----
-';
+";
 
         $message = $this->createTestMessage();
         $message->setTo($this->testEmailReceiver);
@@ -322,7 +317,7 @@ U41eAdnQ3dDGzUNedIJkSh6Z0A4VMZIEOag9hPNYqQXZBQgfobvPKw==
         $message->setTextBody('Signed message body');
         $message->setSignature([
             'type' => 'dkim',
-            'key'  => $privateKey,
+            'key' => $privateKey,
         ]);
         $this->assertTrue($message->send());
     }
@@ -386,7 +381,7 @@ U41eAdnQ3dDGzUNedIJkSh6Z0A4VMZIEOag9hPNYqQXZBQgfobvPKw==
         $message->setTo($this->testEmailReceiver);
         $message->setFrom('someuser@somedomain.com');
         $message->setSubject('Yii Swift Embed File Test');
-        $message->setHtmlBody('Embed image: <img src="'.$cid.'" alt="pic">');
+        $message->setHtmlBody('Embed image: <img src="' . $cid. '" alt="pic">');
 
         $this->assertTrue($message->send());
 
@@ -412,7 +407,7 @@ U41eAdnQ3dDGzUNedIJkSh6Z0A4VMZIEOag9hPNYqQXZBQgfobvPKw==
         $message->setTo($this->testEmailReceiver);
         $message->setFrom('someuser@somedomain.com');
         $message->setSubject('Yii Swift Embed File Test');
-        $message->setHtmlBody('Embed image: <img src="'.$cid.'" alt="pic">');
+        $message->setHtmlBody('Embed image: <img src="' . $cid. '" alt="pic">');
 
         $this->assertTrue($message->send());
 
@@ -527,7 +522,7 @@ U41eAdnQ3dDGzUNedIJkSh6Z0A4VMZIEOag9hPNYqQXZBQgfobvPKw==
 
         $message = $this->createTestMessage()
             ->setHeaders([
-                'Some'     => 'foo',
+                'Some' => 'foo',
                 'Multiple' => ['value1', 'value2'],
             ]);
         $this->assertEquals(['foo'], $message->getHeader('Some'));

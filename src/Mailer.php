@@ -1,8 +1,6 @@
 <?php
-
 /**
  * @link https://www.yiiframework.com/
- *
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license https://www.yiiframework.com/license/
  */
@@ -74,7 +72,6 @@ use yii\mail\BaseMailer;
  * @property-read \Swift_Transport $transport
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
- *
  * @since 2.0
  */
 class Mailer extends BaseMailer
@@ -85,8 +82,7 @@ class Mailer extends BaseMailer
     public $messageClass = 'yii\swiftmailer\Message';
     /**
      * @var bool whether to enable writing of the SwiftMailer internal logs using Yii log mechanism.
-     *           If enabled [[Logger]] plugin will be attached to the [[transport]] for this purpose.
-     *
+     * If enabled [[Logger]] plugin will be attached to the [[transport]] for this purpose.
      * @see Logger
      * @since 2.0.4
      */
@@ -100,6 +96,7 @@ class Mailer extends BaseMailer
      * @var \Swift_Transport|array Swift transport instance or its array configuration.
      */
     private $_transport = [];
+
 
     /**
      * @return \Swift_Mailer Swift mailer instance.
@@ -120,13 +117,12 @@ class Mailer extends BaseMailer
 
     /**
      * @param array|\Swift_Transport $transport
-     *
      * @throws InvalidConfigException on invalid argument.
      */
     public function setTransport($transport)
     {
         if (!is_array($transport) && !is_object($transport)) {
-            throw new InvalidConfigException('"'.get_class($this).'::transport" should be either object or array, "'.gettype($transport).'" given.');
+            throw new InvalidConfigException('"' . get_class($this) . '::transport" should be either object or array, "' . gettype($transport) . '" given.');
         }
         $this->_transport = $transport;
         $this->_swiftMailer = null;
@@ -154,14 +150,13 @@ class Mailer extends BaseMailer
         if (is_array($address)) {
             $address = implode(', ', array_keys($address));
         }
-        Yii::info('Sending email "'.$message->getSubject().'" to "'.$address.'"', __METHOD__);
+        Yii::info('Sending email "' . $message->getSubject() . '" to "' . $address . '"', __METHOD__);
 
         return $this->getSwiftMailer()->send($message->getSwiftMessage()) > 0;
     }
 
     /**
      * Creates Swift mailer instance.
-     *
      * @return \Swift_Mailer mailer instance.
      */
     protected function createSwiftMailer()
@@ -171,11 +166,8 @@ class Mailer extends BaseMailer
 
     /**
      * Creates email transport instance by its array configuration.
-     *
      * @param array $config transport configuration.
-     *
      * @throws \yii\base\InvalidConfigException on invalid transport configuration.
-     *
      * @return \Swift_Transport transport instance.
      */
     protected function createTransport(array $config)
@@ -192,11 +184,11 @@ class Mailer extends BaseMailer
 
         if ($this->enableSwiftMailerLogging) {
             $plugins[] = [
-                'class'         => 'Swift_Plugins_LoggerPlugin',
+                'class' => 'Swift_Plugins_LoggerPlugin',
                 'constructArgs' => [
                     [
-                        'class' => 'yii\swiftmailer\Logger',
-                    ],
+                        'class' => 'yii\swiftmailer\Logger'
+                    ]
                 ],
             ];
         }
@@ -217,12 +209,9 @@ class Mailer extends BaseMailer
 
     /**
      * Creates Swift library object, from given array configuration.
-     *
      * @param array $config object configuration
-     *
+     * @return Object created object
      * @throws \yii\base\InvalidConfigException on invalid configuration.
-     *
-     * @return object created object
      */
     protected function createSwiftObject(array $config)
     {
@@ -254,11 +243,11 @@ class Mailer extends BaseMailer
                 if ($reflection->hasProperty($name) && $reflection->getProperty($name)->isPublic()) {
                     $object->$name = $value;
                 } else {
-                    $setter = 'set'.$name;
+                    $setter = 'set' . $name;
                     if ($reflection->hasMethod($setter) || $reflection->hasMethod('__call')) {
                         $object->$setter($value);
                     } else {
-                        throw new InvalidConfigException('Setting unknown property: '.$className.'::'.$name);
+                        throw new InvalidConfigException('Setting unknown property: ' . $className . '::' . $name);
                     }
                 }
             }

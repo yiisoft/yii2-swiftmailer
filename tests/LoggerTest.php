@@ -13,8 +13,7 @@ class LoggerTest extends TestCase
     }
 
     /**
-     * Data provider for [[testAdd()]].
-     *
+     * Data provider for [[testAdd()]]
      * @return array test data
      */
     public function dataProviderAdd()
@@ -24,29 +23,29 @@ class LoggerTest extends TestCase
                 '>> command sent',
                 [
                     'message' => '>> command sent',
-                    'level'   => \yii\log\Logger::LEVEL_INFO,
-                ],
+                    'level' => \yii\log\Logger::LEVEL_INFO,
+                ]
             ],
             [
                 '<< response received',
                 [
                     'message' => '<< response received',
-                    'level'   => \yii\log\Logger::LEVEL_INFO,
-                ],
+                    'level' => \yii\log\Logger::LEVEL_INFO,
+                ]
             ],
             [
                 '++ transport started',
                 [
                     'message' => '++ transport started',
-                    'level'   => \yii\log\Logger::LEVEL_TRACE,
-                ],
+                    'level' => \yii\log\Logger::LEVEL_TRACE,
+                ]
             ],
             [
                 '!! error message',
                 [
                     'message' => '!! error message',
-                    'level'   => \yii\log\Logger::LEVEL_WARNING,
-                ],
+                    'level' => \yii\log\Logger::LEVEL_WARNING,
+                ]
             ],
         ];
     }
@@ -55,7 +54,7 @@ class LoggerTest extends TestCase
      * @dataProvider dataProviderAdd
      *
      * @param string $entry
-     * @param array  $expectedLogMessage
+     * @param array $expectedLogMessage
      */
     public function testAdd($entry, array $expectedLogMessage)
     {

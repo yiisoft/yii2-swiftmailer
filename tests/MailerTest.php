@@ -5,7 +5,7 @@ namespace yiiunit\extensions\swiftmailer;
 use Yii;
 use yii\swiftmailer\Mailer;
 
-Yii::setAlias('@yii/swiftmailer', __DIR__.'/../../../../extensions/swiftmailer');
+Yii::setAlias('@yii/swiftmailer', __DIR__ . '/../../../../extensions/swiftmailer');
 
 class MailerTest extends TestCase
 {
@@ -13,8 +13,8 @@ class MailerTest extends TestCase
     {
         $this->mockApplication([
             'components' => [
-                'email' => $this->createTestEmailComponent(),
-            ],
+                'email' => $this->createTestEmailComponent()
+            ]
         ]);
     }
 
@@ -48,8 +48,8 @@ class MailerTest extends TestCase
         $mailer = new Mailer();
 
         $transportConfig = [
-            'class'    => 'Swift_SmtpTransport',
-            'host'     => 'localhost',
+            'class' => 'Swift_SmtpTransport',
+            'host' => 'localhost',
             'username' => 'username',
             'password' => 'password',
         ];
@@ -71,7 +71,7 @@ class MailerTest extends TestCase
         $host = 'some.test.host';
         $port = 999;
         $transportConfig = [
-            'class'         => $class,
+            'class' => $class,
             'constructArgs' => [
                 $host,
                 $port,
@@ -96,10 +96,10 @@ class MailerTest extends TestCase
         $rate = 10;
 
         $transportConfig = [
-            'class'   => 'Swift_SmtpTransport',
+            'class' => 'Swift_SmtpTransport',
             'plugins' => [
                 [
-                    'class'         => $pluginClass,
+                    'class' => $pluginClass,
                     'constructArgs' => [
                         $rate,
                     ],
@@ -109,7 +109,7 @@ class MailerTest extends TestCase
         $mailer->setTransport($transportConfig);
         $transport = $mailer->getTransport();
         $this->assertTrue(is_object($transport), 'Unable to setup transport via config!');
-        $this->assertContains(':'.$pluginClass.':', print_r($transport, true), 'Plugin not added');
+        $this->assertContains(':' . $pluginClass . ':', print_r($transport, true), 'Plugin not added');
     }
 
     public function testGetSwiftMailer()
