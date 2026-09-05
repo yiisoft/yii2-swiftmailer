@@ -23,9 +23,7 @@
     },
     "require-dev": {
         "cweagans/composer-patches": "^1.7",
-        "phpunit/phpunit": "4.8.34",
-        "rector/rector": "^2.6",
-        "mspirkov/yii2-rector": "^0.1"
+        "phpunit/phpunit": "4.8.34"
     },
     "repositories": [
         {
@@ -58,7 +56,6 @@
         }
     },
     "scripts": {
-        "tests": "./vendor/bin/phpunit",
-        "rector": "./vendor/bin/rector"
+        "tests": "./vendor/bin/phpunit"
     }
 }

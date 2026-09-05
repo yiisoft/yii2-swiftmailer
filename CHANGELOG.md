@@ -4,8 +4,7 @@ Yii Framework 2 swiftmailer extension Change Log
 2.1.4 under development
 -----------------------
 
-- no changes in this release.
-
+- Enh #118: Add the missing `@property` tags (mspirkov)
 
 2.1.3 December 30, 2021
 -----------------------
