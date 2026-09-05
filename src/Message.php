@@ -23,12 +23,21 @@ use yii\mail\BaseMessage;
  * @property-write array $headers Headers in format: `[name => value]`.
  * @property int $priority Priority value as integer in range: `1..5`, where 1 is the highest priority and 5
  * is the lowest.
- * @property string $readReceiptTo Receipt receive email addresses. Note that the type of this property
- * differs in getter and setter. See [[getReadReceiptTo()]] and [[setReadReceiptTo()]] for details.
+ * @property-read string $readReceiptTo Receipt receive email addresses.
+ * @property-write string|array $readReceiptTo Receipt receive email address(es).
  * @property string $returnPath The bounce email address.
  * @property-write array|callable|\Swift_Signer $signature Signature specification. See [[addSignature()]] for
  * details on how it should be specified.
  * @property-read \Swift_Message $swiftMessage Swift message instance.
+ * @property string $charset The character set of this message.
+ * @property string|array<mixed> $from The sender.
+ * @property string|array<mixed> $replyTo The reply-to address of this message.
+ * @property string|array<mixed> $to The message recipients.
+ * @property string|array<mixed> $cc The Cc (additional copy receiver) addresses of this message.
+ * @property string|array<mixed> $bcc The Bcc (hidden copy receiver) addresses of this message.
+ * @property string $subject The message subject.
+ * @property-write string $textBody Message plain text content.
+ * @property-write string $htmlBody Message HTML content.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 2.0

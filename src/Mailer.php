@@ -70,6 +70,7 @@ use yii\mail\BaseMailer;
  *
  * @property-read \Swift_Mailer $swiftMailer Swift mailer instance.
  * @property-read \Swift_Transport $transport
+ * @property-write array|\Swift_Transport $transport
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 2.0
