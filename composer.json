@@ -54,5 +54,8 @@
             "cweagans/composer-patches": true,
             "yiisoft/yii2-composer": true
         }
+    },
+    "scripts": {
+        "tests": "./vendor/bin/phpunit"
     }
 }
